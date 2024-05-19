@@ -1,4 +1,7 @@
 ﻿  Game.cpp
+C:\Users\Dani\Downloads\SDL_Base\SDL_Base\SDL\Game.cpp(41,20): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+  Scene.cpp
+  SceneManager.cpp
   main.cpp
   Generando código...
   SDL.vcxproj -> C:\Users\Dani\Downloads\SDL_Base\SDL_Base\SDL\binaries\x64Debug\SDL.exe

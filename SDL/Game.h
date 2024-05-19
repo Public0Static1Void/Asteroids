@@ -1,5 +1,7 @@
 #pragma once
 #include "SceneManager.h"
+#include "SDL_image.h"
+#include "Time.h"
 #include <iostream>
 
 class Game {
@@ -7,7 +9,7 @@ public:
 	Game();
 	~Game();
 
-	void InitGame(const char* title, int width, int height, bool fullScreen);
+	void InitGame(const char* title, int width, int height, bool fullScreen, int f_p_s);
 
 	void HandleEvents();
 	void Update();
@@ -16,6 +18,10 @@ public:
 
 	bool Running();
 
+	int fps;
+	float framerate;
+
+	Timer* timer;
 private:
 	bool isRunning;
 

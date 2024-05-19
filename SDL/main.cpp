@@ -40,12 +40,22 @@ int main(int argc, char* argv[]) {
 
 	Game* game = new Game();
 
-	game->InitGame("Asteroids", 1080, 540, false);
+	game->InitGame("Asteroids", 1080, 540, false, 60);
 
 	while (game->Running()) {
+		high_resolution_clock::time_point before = game->timer->GetActualTime();
+
 		game->HandleEvents();
 		game->Update();
 		game->Render();
+
+		high_resolution_clock::time_point after = game->timer->GetActualTime();
+		game->timer->UpdateDeltaTime(before, after);
+
+		// Limitador de fps
+		if (game->timer->deltaTime > game->framerate) {
+			Timer::Wait(game->timer->deltaTime - game->framerate);
+		}
 	}
 
 	game->Clear();
