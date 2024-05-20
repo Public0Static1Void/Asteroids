@@ -8,6 +8,8 @@
 using namespace std;
 using namespace chrono;
 
+#include "Player.h"
+
 int main(int argc, char* argv[]) {
 	/*
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -40,7 +42,7 @@ int main(int argc, char* argv[]) {
 
 	Game* game = new Game();
 
-	game->InitGame("Asteroids", 1080, 540, false, 60);
+	game->InitGame("Asteroids", 1080, 540, false, 5);
 
 	while (game->Running()) {
 		high_resolution_clock::time_point before = game->timer->GetActualTime();

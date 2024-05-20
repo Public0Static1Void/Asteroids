@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "SDL_image.h"
 #include "Time.h"
+#include "Player.h"
 #include <iostream>
 
 class Game {
@@ -29,4 +30,6 @@ private:
 	SDL_Renderer* renderer;
 
 	int count;
+
+	Player* player;
 };

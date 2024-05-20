@@ -6,6 +6,10 @@ SDL_Rect src_Rect, dst_Rect;
 
 Game::Game() {
 	timer = new Timer();
+	count = 0;
+	fps = 12;
+
+	isRunning = false;
 }
 Game::~Game() {
 
@@ -47,6 +51,10 @@ void Game::InitGame(const char* title, int width, int height, bool fullScreen, i
 	SDL_Surface* tmpSurface = IMG_Load("Assets/asteroids_nave.png");
 	playerTex = SDL_CreateTextureFromSurface(renderer, tmpSurface);
 	SDL_FreeSurface(tmpSurface);
+
+	// Player
+	player = new Player(200, 200, 32, 32, 1, 1, "Assets/asteroids_nave.png");
+	player->LoadSprites(renderer);
 }
 
 void Game::HandleEvents() {
@@ -62,35 +70,39 @@ void Game::HandleEvents() {
 
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
 
+	int dir_x = 0;
+	int dir_y = 0;
 	if (currentKeyStates[SDL_SCANCODE_UP]) {
-		dst_Rect.y -= 1;
+		dir_y = -1;
 	}
 	if (currentKeyStates[SDL_SCANCODE_DOWN]) {
-		dst_Rect.y += 1;
+		dir_y = 1;
 	}
 	if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
-		dst_Rect.x += 1;
+		dir_x = 1;
 	}
 	if (currentKeyStates[SDL_SCANCODE_LEFT]) {
-		dst_Rect.x -= 1;
+		dir_x = -1;
 	}
+
+	player->Move(dir_x, dir_y);
 }
 
 void Game::Update() {
 	count++;
-	cout << "Loop: " << count << endl;
+	//cout << "Loop: " << count << endl;
 
 	dst_Rect.w = 32;
 	dst_Rect.h = 32;
-
-	chrono::high_resolution_clock::time_point after = timer->GetActualTime();
 }
 
 void Game::Render() {
 	SDL_RenderClear(renderer);
 
 	// Aquí se añadirán las cosas para dibujarlas
-	SDL_RenderCopy(renderer, playerTex, NULL, &dst_Rect);
+	//SDL_RenderCopy(renderer, player->GetTexture(), NULL, &player->pRect);
+	
+	player->Render(renderer);
 
 	SDL_RenderPresent(renderer);
 }
