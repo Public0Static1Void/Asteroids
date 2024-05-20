@@ -53,7 +53,7 @@ void Game::InitGame(const char* title, int width, int height, bool fullScreen, i
 	SDL_FreeSurface(tmpSurface);
 
 	// Player
-	player = new Player(200, 200, 32, 32, 1, 1, "Assets/asteroids_nave.png");
+	player = new Player(200, 200, 32, 32, 3, 2, "Assets/asteroids_nave.png");
 	player->LoadSprites(renderer);
 }
 
@@ -85,15 +85,14 @@ void Game::HandleEvents() {
 		dir_x = -1;
 	}
 
-	player->Move(dir_x, dir_y);
+	player->Move(dir_x, dir_y, timer);
+
+	if (currentKeyStates[SDL_SCANCODE_SPACE])
+		player->Shoot();
 }
 
 void Game::Update() {
-	count++;
-	//cout << "Loop: " << count << endl;
-
-	dst_Rect.w = 32;
-	dst_Rect.h = 32;
+	player->loop_count++;
 }
 
 void Game::Render() {

@@ -18,10 +18,11 @@ void Timer::UpdateDeltaTime(std::chrono::high_resolution_clock::time_point befor
 	deltaTime = duration_cast<duration<float>>(after - before).count();
 }
 
-void Timer::Wait(float time) {
+bool Timer::Wait(float time) {
 	clock_t end = clock() + time * CLOCKS_PER_SEC;
 
 	while (clock() < end) {
 		// wait
 	}
+	return true;
 }
