@@ -5,8 +5,8 @@ Asteroid::Asteroid(float x, float y, float speed)
 
 void Asteroid::updatePosition(const Player& player) {
     // Calculate direction vector from asteroid to player
-    float deltaX = player.getX() - x;
-    float deltaY = player.getY() - y;
+    float deltaX = player.pRect.x - x;
+    float deltaY = player.pRect.y - y;
     float distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
 
     if (distance != 0) {

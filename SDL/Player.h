@@ -22,6 +22,9 @@ public:
 
 	void Render(SDL_Renderer* renderer);
 
+	const float getX() { return posX; }
+	const float getY() { return posY; }
+
 private:
 	const char* image_address;
 
