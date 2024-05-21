@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\hugo\Downloads\Asteroids\SDL\binaries\x64Debug\SDL.exe</FullPath>
+      <FullPath>C:\Users\hugo\Asteroids\SDL\binaries\x64Debug\SDL.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
