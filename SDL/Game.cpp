@@ -1,4 +1,4 @@
-#include "Game.h"
+ï»¿#include "Game.h"
 using namespace std;
 
 SDL_Texture* playerTex;
@@ -55,6 +55,14 @@ void Game::InitGame(const char* title, int width, int height, bool fullScreen, i
 	// Player
 	player = new Player(200, 200, 32, 32, 3, 2, "Assets/asteroids_nave.png");
 	player->LoadSprites(renderer);
+
+	// Asteroide ----------------------------------------------------------------------
+	asteroid_mini = new Asteroid(-10, -10, 32, 32, 2, "Assets/asteroids_meteor_little.png");
+	asteroid_mini->LoadSprites(renderer);
+
+	asteroid_mid = new Asteroid(10, 10, 64, 64, 2, "Assets/asteroids_meteor_medium.png");
+	asteroid_mid->LoadSprites(renderer);
+	
 }
 
 void Game::HandleEvents() {
@@ -93,15 +101,25 @@ void Game::HandleEvents() {
 
 void Game::Update() {
 	player->loop_count++;
+
+	asteroid_mini->updatePosition(player);
+	asteroid_mini->checkCollision(player->pRect);
+	if (asteroid_mini->checkCollision(player->pRect))
+	{
+		isRunning = false;
+	}
+	asteroid_mid->updatePosition(player);
 }
 
 void Game::Render() {
 	SDL_RenderClear(renderer);
 
-	// Aquí se añadirán las cosas para dibujarlas
+	// AquÃ­ se aÃ±adirÃ¡n las cosas para dibujarlas
 	//SDL_RenderCopy(renderer, player->GetTexture(), NULL, &player->pRect);
-	
+
 	player->Render(renderer);
+	asteroid_mini->Render(renderer);
+	asteroid_mid->Render(renderer);
 
 	SDL_RenderPresent(renderer);
 }

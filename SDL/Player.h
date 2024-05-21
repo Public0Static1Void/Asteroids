@@ -21,7 +21,7 @@ public:
 	SDL_Texture* GetTexture() { return playerTex; }
 	int GetAngle() { return rotation; }
 
-	SDL_Rect pRect;
+	SDL_Rect* pRect;
 
 	void Render(SDL_Renderer* renderer);
 
@@ -49,5 +49,5 @@ private:
 
 	int current_bullet;
 
-	int delay = 1;
+	int delay = 60;
 };

@@ -3,6 +3,7 @@
 #include "SDL_image.h"
 #include "Time.h"
 #include "Player.h"
+#include "asteroid.h"
 #include <iostream>
 
 class Game {
@@ -32,4 +33,7 @@ private:
 	int count;
 
 	Player* player;
+	Asteroid* asteroid_mini;
+	Asteroid* asteroid_mid;
+	Asteroid* asteroid_big;
 };

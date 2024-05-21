@@ -1,31 +1,52 @@
 #include "Asteroid.h"
 
-Asteroid::Asteroid(float x, float y, float speed)
-    : x(x), y(y), speed(speed), directionX(0), directionY(0) {}
+Asteroid::Asteroid(float x, float y, int width, int height, float speed, const char* im_address)
+    : x(x), y(y), speed(speed), directionX(0), directionY(0), image_address(im_address) {
 
-void Asteroid::updatePosition(const Player& player) {
-    // Calculate direction vector from asteroid to player
-    float deltaX = player.pRect.x - x;
-    float deltaY = player.pRect.y - y;
-    float distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
-
-    if (distance != 0) {
-        // Normalize the direction vector
-        directionX = deltaX / distance;
-        directionY = deltaY / distance;
-    }
-
-    // Update position
-    x += directionX * speed;
-    y += directionY * speed;
+    asteroidRect.w = width;
+    asteroidRect.h = height;
 }
 
-void Bullet::LoadSprites(SDL_Renderer* renderer) {
-	SDL_Surface* tmpSurface = IMG_Load(image_address);
-	bullet_texture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
+void Asteroid::updatePosition(const Player* player) {
+    
+    float deltaX;
+    float deltaY;
+    if (!launched)
+    {
+        deltaX = player->pRect->x - x;
+        deltaY = player->pRect->y - y;
+
+        float distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        if (distance != 0) {
+            
+            directionX = deltaX / distance;
+            directionY = deltaY / distance;
+        }
+        launched = true;
+    }
+    
+
+    
+    x += directionX * speed;
+    y += directionY * speed;
+
+    asteroidRect.x = static_cast<int>(x);
+    asteroidRect.y = static_cast<int>(y);
+
+    std::cout << "Position: ( " << asteroidRect.x << ", " << asteroidRect.y << " )\n";
+}
+
+void Asteroid::LoadSprites(SDL_Renderer* renderer) {
+    SDL_Surface* tmpSurface = IMG_Load(image_address);
+    asteroid_texture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
+    SDL_FreeSurface(tmpSurface);
 }
 
 void Asteroid::Render(SDL_Renderer* renderer) {
-    SDL_RenderCopyEx(renderer, bullet_texture, nullptr, &bullet_rect, rotation, nullptr, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, asteroid_texture, nullptr, &asteroidRect, rotation, nullptr, SDL_FLIP_NONE);
+}
+
+bool Asteroid::checkCollision(const SDL_Rect* otherRect) {
+    return SDL_HasIntersection(&asteroidRect, otherRect);
 }

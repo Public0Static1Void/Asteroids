@@ -1,11 +1,13 @@
 #include "Player.h"
 
 Player::Player(int x, int y, int w, int h, float sp, int rot_speed, const char* pl_address) {
+	pRect = new SDL_Rect();
+	
 	posX = x;
 	posY = y;
 
-	pRect.w = w;
-	pRect.h = h;
+	pRect->w = w;
+	pRect->h = h;
 
 	speed = sp;
 	max_speed = speed * 2;
@@ -35,7 +37,7 @@ void Player::LoadSprites(SDL_Renderer* renderer) {
 }
 
 void Player::Render(SDL_Renderer* renderer) {
-	SDL_RenderCopyEx(renderer, playerTex, nullptr, &pRect, rotation, nullptr, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(renderer, playerTex, nullptr, pRect, rotation, nullptr, SDL_FLIP_NONE);
 	for (int i = 0; i < bullet_num; i++)
 		bullet[i]->Render(renderer);
 }
@@ -73,14 +75,14 @@ void Player::Move(int dir_x, int dir_y, Timer* timer) {
 	// Límites de la pantalla
 	int screen_w = 1080;
 	int screen_h = 540;
-	if (posX > screen_w) posX -= screen_w + pRect.w;
-	if (posX < -pRect.w) posX += screen_w + pRect.w;
-	if (posY > screen_h) posY -= screen_h + pRect.h;
-	if (posY < -pRect.h) posY += screen_h + pRect.h;
+	if (posX > screen_w) posX -= screen_w + pRect->w;
+	if (posX < -pRect->w) posX += screen_w + pRect->w;
+	if (posY > screen_h) posY -= screen_h + pRect->h;
+	if (posY < -pRect->h) posY += screen_h + pRect->h;
 
 	// Aplica la nueva posición a través de un cast
-	pRect.x = static_cast<int>(posX);
-	pRect.y = static_cast<int>(posY);
+	pRect->x = static_cast<int>(posX);
+	pRect->y = static_cast<int>(posY);
 
 	//std::cout << "Position: ( " << posX << ", " << posY << " ), Rotation: " << angle << ", Inertia: " << inertia << std::endl;
 }
@@ -88,7 +90,7 @@ void Player::Move(int dir_x, int dir_y, Timer* timer) {
 void Player::Shoot() {
 	if (loop_count < delay) return;
 
-	bullet[current_bullet]->RestoreBullet(pRect.x + pRect.w / 2, pRect.y + pRect.h / 2);
+	bullet[current_bullet]->RestoreBullet(pRect->x + pRect->w / 2, pRect->y + pRect->h / 2);
 
 	current_bullet++;
 	if (current_bullet >= bullet_num)
