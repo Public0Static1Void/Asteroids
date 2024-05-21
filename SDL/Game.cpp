@@ -4,6 +4,13 @@ using namespace std;
 SDL_Texture* playerTex;
 SDL_Rect src_Rect, dst_Rect;
 
+
+const char* asteroid_paths[] = {
+	"Assets/asteroids_meteor_little.png",
+	"Assets/asteroids_meteor_medium.png",
+	"Assets/asteroids_meteor_large.png"
+};
+
 Game::Game() {
 	timer = new Timer();
 	count = 0;
@@ -22,6 +29,8 @@ void Game::InitGame(const char* title, int width, int height, bool fullScreen, i
 	}
 
 	cout << "Init succesful." << endl;
+
+	std::srand(std::time(0));
 
 	int flags = 0;
 	if (fullScreen)
@@ -57,12 +66,33 @@ void Game::InitGame(const char* title, int width, int height, bool fullScreen, i
 	player->LoadSprites(renderer);
 
 	// Asteroide ----------------------------------------------------------------------
-	asteroid_mini = new Asteroid(-10, -10, 32, 32, 2, "Assets/asteroids_meteor_little.png");
+	asteroid_mini = new Asteroid(-10, -10, 32, 32, 2, 1, "Assets/asteroids_meteor_little.png");
 	asteroid_mini->LoadSprites(renderer);
 
-	asteroid_mid = new Asteroid(10, 10, 64, 64, 2, "Assets/asteroids_meteor_medium.png");
+	asteroid_mid = new Asteroid(1080, 550, 64, 64, 2, 2, "Assets/asteroids_meteor_medium.png");
 	asteroid_mid->LoadSprites(renderer);
-	
+
+	SpawnAsteroids(5);
+}
+
+void Game::SpawnAsteroids(int num) {
+	asteroids.clear();
+
+	for (int i = 0; i < num; i++) {
+		int x = rand() % 1080;
+		int y = rand() % 1;
+		switch (y) {
+		case 0:
+			y = -10;
+			break;
+		case 1:
+			y = 560;
+			break;
+		}
+		Asteroid* as = new Asteroid(x, y, 64, 64, 1 + round, 2, asteroid_paths[2]);
+		as->LoadSprites(renderer);
+		asteroids.push_back(as);
+	}
 }
 
 void Game::HandleEvents() {
@@ -100,26 +130,71 @@ void Game::HandleEvents() {
 }
 
 void Game::Update() {
+	count++;
 	player->loop_count++;
+
+	if (count > framerate * 100) {
+		SpawnAsteroids(5 + round);
+		round++;
+
+		count = 0;
+	}
 
 	asteroid_mini->updatePosition(player);
 	asteroid_mini->checkCollision(player->pRect);
+
 	if (asteroid_mini->checkCollision(player->pRect))
 	{
-		isRunning = false;
+		isRunning = false; // gg
 	}
+
+	for (int i = 0; i < asteroids.size(); i++) {
+		asteroids[i]->updatePosition(player);
+
+		if (asteroids[i]->checkCollision(player->pRect))
+			isRunning = false;
+		for (int j = 0; j < player->bullet_num; j++)
+			if (asteroids[i]->checkCollision(player->bullet[j]->bullet_rect)) {
+				createAsteroid(1, asteroids[i]->size - 1, asteroids[i]);
+				asteroids.erase(asteroids.begin() + i);
+				break;
+			}
+	}
+
+
 	asteroid_mid->updatePosition(player);
+}
+
+void Game::createAsteroid(int num, int size, Asteroid* parent) {
+	if (parent == nullptr)
+		return;
+
+	int new_size = parent->size - 1;
+	if (new_size <= 0)
+		return;
+
+	for (int i = 0; i < num; i++) {
+		Asteroid* as = new Asteroid(parent->getX(), parent->getY(), parent->asteroidRect.w / 1.5f, parent->asteroidRect.h / 1.5f, 1 + round, new_size, asteroid_paths[new_size]);
+		
+		if (as == nullptr) return;
+
+		as->LoadSprites(renderer);
+		asteroids.push_back(as);
+	}
 }
 
 void Game::Render() {
 	SDL_RenderClear(renderer);
 
 	// Aquí se añadirán las cosas para dibujarlas
-	//SDL_RenderCopy(renderer, player->GetTexture(), NULL, &player->pRect);
 
 	player->Render(renderer);
 	asteroid_mini->Render(renderer);
 	asteroid_mid->Render(renderer);
+
+	for (int i = 0; i < asteroids.size(); i++) {
+		asteroids[i]->Render(renderer);
+	}
 
 	SDL_RenderPresent(renderer);
 }

@@ -4,7 +4,9 @@
 #include "Time.h"
 #include "Player.h"
 #include "asteroid.h"
+#include <vector>
 #include <iostream>
+#include <ctime>
 
 class Game {
 public:
@@ -25,6 +27,8 @@ public:
 
 	Timer* timer;
 private:
+	void createAsteroid(int num, int size, Asteroid* parent);
+
 	bool isRunning;
 
 	SDL_Window* window;
@@ -36,4 +40,10 @@ private:
 	Asteroid* asteroid_mini;
 	Asteroid* asteroid_mid;
 	Asteroid* asteroid_big;
+
+	void SpawnAsteroids(int num);
+
+	int round = 0;
+
+	std::vector<Asteroid*> asteroids = {};
 };

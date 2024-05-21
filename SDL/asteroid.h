@@ -10,8 +10,9 @@ private:
     float speed;
     float directionX, directionY;
 
+
 public:
-    Asteroid(float x, float y, int width, int height, float speed, const char* im_address);
+    Asteroid(float x, float y, int width, int height, float speed, int size, const char* im_address);
 
     void LoadSprites(SDL_Renderer* renderer);
 
@@ -30,5 +31,9 @@ public:
     const char* image_address;
     bool launched;
 
+    int size;
+
     float rotation;
+
+    bool dead = false;
 };

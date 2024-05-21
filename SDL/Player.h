@@ -30,6 +30,9 @@ public:
 
 	int loop_count;
 
+	static const int bullet_num = 10;
+	Bullet* bullet[bullet_num];
+
 private:
 	const char* image_address;
 
@@ -44,10 +47,7 @@ private:
 
 	SDL_Texture* playerTex;
 
-	static const int bullet_num = 10;
-	Bullet* bullet[bullet_num];
+	int current_bullet = 0;
 
-	int current_bullet;
-
-	int delay = 60;
+	int delay = 45;
 };

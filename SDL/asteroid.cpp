@@ -1,10 +1,12 @@
 #include "Asteroid.h"
 
-Asteroid::Asteroid(float x, float y, int width, int height, float speed, const char* im_address)
-    : x(x), y(y), speed(speed), directionX(0), directionY(0), image_address(im_address) {
+Asteroid::Asteroid(float x, float y, int width, int height, float speed, int s, const char* im_address)
+    : x(x), y(y), speed(speed), directionX(0), directionY(0), size(s), image_address(im_address) {
 
     asteroidRect.w = width;
     asteroidRect.h = height;
+
+    rotation = 0;
 }
 
 void Asteroid::updatePosition(const Player* player) {
@@ -48,5 +50,6 @@ void Asteroid::Render(SDL_Renderer* renderer) {
 }
 
 bool Asteroid::checkCollision(const SDL_Rect* otherRect) {
+    if (dead) return false;
     return SDL_HasIntersection(&asteroidRect, otherRect);
 }

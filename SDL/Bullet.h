@@ -16,7 +16,9 @@ public:
 
 	void RestoreBullet(int x, int y);
 
-	void Collision(SDL_Rect rectList[], int num);
+	bool checkCollision(SDL_Rect* rect);
+
+	SDL_Rect* bullet_rect;
 private:
 	float speed;
 	float dir_x, dir_y;
@@ -27,7 +29,6 @@ private:
 
 	const char* image_address;
 
-	SDL_Rect bullet_rect;
 
 	SDL_Texture* bullet_texture;
 
