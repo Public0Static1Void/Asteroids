@@ -4,9 +4,11 @@ C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Game.cpp(54,20): warning
 C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Game.cpp(92,47): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
 C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Game.cpp(92,34): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
 C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Game.cpp(92,31): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Game.cpp(177,127): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Game.cpp(177,117): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Game.cpp(177,86): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Game.cpp(180,129): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Game.cpp(180,119): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Game.cpp(180,87): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+  main.cpp
+  Generando código...
   SDL.vcxproj -> C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\binaries\x64Debug\SDL.exe
   0 archivo(s) copiado(s)
   0 archivo(s) copiado(s)

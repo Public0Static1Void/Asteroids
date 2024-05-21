@@ -7,6 +7,8 @@
 #include <vector>
 #include <iostream>
 #include <ctime>
+#include <fstream>
+#include <algorithm>
 
 class Game {
 public:
@@ -21,6 +23,8 @@ public:
 	void Clear();
 
 	bool Running();
+
+	void SaveScore(int score);
 
 	int fps;
 	float framerate;
@@ -44,6 +48,8 @@ private:
 	void SpawnAsteroids(int num);
 
 	int round = 0;
+
+	int score = 0;
 
 	std::vector<Asteroid*> asteroids = {};
 };

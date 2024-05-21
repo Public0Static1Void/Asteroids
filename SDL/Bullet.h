@@ -18,6 +18,8 @@ public:
 
 	bool checkCollision(SDL_Rect* rect);
 
+	void SumY(int am) { xPos += am; }
+
 	SDL_Rect* bullet_rect;
 private:
 	float speed;

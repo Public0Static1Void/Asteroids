@@ -62,21 +62,21 @@ void Game::InitGame(const char* title, int width, int height, bool fullScreen, i
 	SDL_FreeSurface(tmpSurface);
 
 	// Player
-	player = new Player(200, 200, 32, 32, 3, 2, "Assets/asteroids_nave.png");
+	player = new Player(540, 270, 32, 32, 3, 2, "Assets/asteroids_nave.png");
 	player->LoadSprites(renderer);
 
 	// Asteroide ----------------------------------------------------------------------
 	asteroid_mini = new Asteroid(-10, -10, 32, 32, 2, 1, "Assets/asteroids_meteor_little.png");
 	asteroid_mini->LoadSprites(renderer);
 
-	asteroid_mid = new Asteroid(1080, 550, 64, 64, 2, 2, "Assets/asteroids_meteor_medium.png");
+	asteroid_mid = new Asteroid(1080, 550, 128, 64, 2, 2, "Assets/asteroids_meteor_medium.png");
 	asteroid_mid->LoadSprites(renderer);
 
 	SpawnAsteroids(5);
 }
 
 void Game::SpawnAsteroids(int num) {
-	asteroids.clear();
+	if (asteroids.size() >= 50) return;
 
 	for (int i = 0; i < num; i++) {
 		int x = rand() % 1080;
@@ -153,14 +153,17 @@ void Game::Update() {
 
 		if (asteroids[i]->checkCollision(player->pRect))
 			isRunning = false;
-		for (int j = 0; j < player->bullet_num; j++)
+		for (int j = 0; j < player->bullet_num; j++) {
 			if (asteroids[i]->checkCollision(player->bullet[j]->bullet_rect)) {
+				player->bullet[j]->SumY(1000);
 				createAsteroid(1, asteroids[i]->size - 1, asteroids[i]);
 				asteroids.erase(asteroids.begin() + i);
+
+				score += 105;
 				break;
 			}
+		}
 	}
-
 
 	asteroid_mid->updatePosition(player);
 }
@@ -174,7 +177,7 @@ void Game::createAsteroid(int num, int size, Asteroid* parent) {
 		return;
 
 	for (int i = 0; i < num; i++) {
-		Asteroid* as = new Asteroid(parent->getX(), parent->getY(), parent->asteroidRect.w / 1.5f, parent->asteroidRect.h / 1.5f, 1 + round, new_size, asteroid_paths[new_size]);
+		Asteroid* as = new Asteroid(parent->getX(), parent->getY(), parent->asteroidRect->w / 1.5f, parent->asteroidRect->h / 1.5f, 1 + round, new_size, asteroid_paths[new_size]);
 		
 		if (as == nullptr) return;
 
@@ -203,10 +206,24 @@ void Game::Clear() {
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 
+	SaveScore(score);
+
 	SDL_Quit();
 	cout << "Game cleaned" << endl;
 }
 
 bool Game::Running() {
 	return isRunning;
+}
+
+void Game::SaveScore(int score) {
+	ofstream file("score.txt", std::ios::app);
+	if (file.is_open()) {
+		file << "Player Score: " << score << endl;
+		file.close();
+		cout << "Score saved successfully." << endl;
+	}
+	else {
+		cerr << "Unable to open file to save score." << endl;
+	}
 }

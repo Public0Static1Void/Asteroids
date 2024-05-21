@@ -39,6 +39,24 @@ int main(int argc, char* argv[]) {
 		main_scene.Render(sceneManager.renderer);
 	}
 	*/
+	bool con = true;
+	while (con) {
+		cout << "Asteroids ------\n1- Play\n2- Exit\n3- Credits\n\n-- > ";
+		int input = 0;
+		cin >> input;
+		switch (input) {
+		case 1:
+			cout << "Starting..." << endl;
+			Timer::Wait(2.2f);
+			con = false;
+			break;
+		case 2:
+			cout << ":/" << endl;
+			return 0;
+		case 3:
+			cout << "-- Code --------------" << endl << "Daniel Gonzalez\nHugo Ahmed\n\n\n";
+		}
+	}
 
 	Game* game = new Game();
 

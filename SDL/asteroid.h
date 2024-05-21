@@ -23,7 +23,7 @@ public:
     float getY() const { return y; }
 
 
-    SDL_Rect asteroidRect;
+    SDL_Rect* asteroidRect;
     SDL_Texture* asteroid_texture;
 
     bool checkCollision(const SDL_Rect* otherRect);
