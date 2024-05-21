@@ -1,6 +1,7 @@
 #define ASTEROID_H
 #include <cmath>
 #include "Player.h"
+#include <SDL.h>
 
 class Asteroid {
 private:
@@ -15,4 +16,6 @@ public:
     void render(SDL_Renderer* renderer);
     float getX() const { return x; }
     float getY() const { return y; }
+    void Asteroid::LoadSprites(SDL_Renderer* renderer) {}
+    SDL_Rect asteroidRect;
 };

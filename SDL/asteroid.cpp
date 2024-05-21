@@ -20,8 +20,12 @@ void Asteroid::updatePosition(const Player& player) {
     y += directionY * speed;
 }
 
-void Asteroid::render(SDL_Renderer* renderer) {
-    SDL_Rect asteroidRect = { static_cast<int>(x), static_cast<int>(y), 20, 20 };
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);  // Red color
-    SDL_RenderFillRect(renderer, &asteroidRect);
+void Bullet::LoadSprites(SDL_Renderer* renderer) {
+	SDL_Surface* tmpSurface = IMG_Load(image_address);
+	bullet_texture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
+	SDL_FreeSurface(tmpSurface);
+}
+
+void Asteroid::Render(SDL_Renderer* renderer) {
+    SDL_RenderCopyEx(renderer, bullet_texture, nullptr, &bullet_rect, rotation, nullptr, SDL_FLIP_NONE);
 }
