@@ -1,20 +1,24 @@
-﻿  Bullet.cpp
-C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Bullet.cpp(31,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Bullet.cpp(48,9): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Bullet.cpp(48,19): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+﻿  asteroid.cpp
+  Bullet.cpp
+C:\Users\hugo\Downloads\Asteroids\SDL\Bullet.cpp(31,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\hugo\Downloads\Asteroids\SDL\Bullet.cpp(48,9): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\hugo\Downloads\Asteroids\SDL\Bullet.cpp(48,19): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
   Game.cpp
-C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Game.cpp(45,20): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
-  Player.cpp
-C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Player.cpp(4,9): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Player.cpp(5,9): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Player.cpp(14,19): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Player.cpp(49,23): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Player.cpp(57,21): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Player.cpp(59,14): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-  asteroid.cpp
+C:\Users\hugo\Downloads\Asteroids\SDL\Game.cpp(45,20): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
   main.cpp
+  Player.cpp
+C:\Users\hugo\Downloads\Asteroids\SDL\Player.cpp(4,9): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\hugo\Downloads\Asteroids\SDL\Player.cpp(5,9): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\hugo\Downloads\Asteroids\SDL\Player.cpp(14,19): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\hugo\Downloads\Asteroids\SDL\Player.cpp(49,23): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\hugo\Downloads\Asteroids\SDL\Player.cpp(57,21): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\hugo\Downloads\Asteroids\SDL\Player.cpp(59,14): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+  Scene.cpp
+  SceneManager.cpp
+  Timer.cpp
+C:\Users\hugo\Downloads\Asteroids\SDL\Timer.cpp(22,14): warning C4244: 'inicializando': conversión de 'float' a 'clock_t'; posible pérdida de datos
   Generando código...
-  SDL.vcxproj -> C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\binaries\x64Debug\SDL.exe
+  SDL.vcxproj -> C:\Users\hugo\Downloads\Asteroids\SDL\binaries\x64Debug\SDL.exe
   0 archivo(s) copiado(s)
   0 archivo(s) copiado(s)
   0 archivo(s) copiado(s)

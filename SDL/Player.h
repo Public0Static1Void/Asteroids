@@ -49,5 +49,5 @@ private:
 
 	int current_bullet;
 
-	int delay = 30;
+	int delay = 1;
 };
