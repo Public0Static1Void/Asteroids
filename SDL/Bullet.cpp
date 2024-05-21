@@ -53,3 +53,12 @@ void Bullet::RestoreBullet(int x, int y) {
 void Bullet::Render(SDL_Renderer* renderer) {
 	SDL_RenderCopyEx(renderer, bullet_texture, nullptr, &bullet_rect, rotation, nullptr, SDL_FLIP_NONE);
 }
+
+void Bullet::Collision(SDL_Rect rectList[], int num) {
+	for (int i = 0; i < num; i++) {
+		for (int j = 0; j < rectList[i].h; j++)
+			for (int k = 0; k < rectList[i].w; k++) {
+				
+			}
+	}
+}

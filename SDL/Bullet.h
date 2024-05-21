@@ -16,7 +16,7 @@ public:
 
 	void RestoreBullet(int x, int y);
 
-	void Collision();
+	void Collision(SDL_Rect rectList[], int num);
 private:
 	float speed;
 	float dir_x, dir_y;
