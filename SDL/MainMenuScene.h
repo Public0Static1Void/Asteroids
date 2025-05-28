@@ -12,6 +12,11 @@ using namespace std;
 
 class MainMenuScene : public Scene {
 public:
+    MainMenuScene(SDL_Window* window, SDL_Renderer* rend, SceneManager* sm) {
+        win = window;
+        renderer = rend;
+        sceneManager = sm;
+    }
     void Init(SDL_Renderer* renderer) override {
         running = true;
 
@@ -39,7 +44,8 @@ public:
                 if (x > buttons[i].rect.x && x < buttons[i].rect.x + buttons[i].rect.w &&
                     y > buttons[i].rect.y && y < buttons[i].rect.y + buttons[i].rect.h) {
                     if (buttons[i].label == "Play") {
-                        sceneManager.ChangeScene(new GameScene(), nullptr);
+                        
+                        sceneManager->ChangeScene(new GameScene(win), renderer);
                     }
                     else if (buttons[i].label == "Créditos") {
                         //sceneManager->ChangeScene(new CreditsScene(), event.button.windowID);
@@ -102,5 +108,7 @@ private:
 
     bool running;
 
-    SceneManager sceneManager;
+    SceneManager* sceneManager;
+    SDL_Window* win;
+    SDL_Renderer* renderer;
 };

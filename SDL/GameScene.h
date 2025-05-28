@@ -15,8 +15,9 @@ using namespace chrono;
 class GameScene : public Scene
 {
 public:
+    GameScene(SDL_Window* win) { window = win; }
     void Init(SDL_Renderer* renderer) override {
-        game = new Game();
+        game = new Game(window, renderer);
         game->InitGame("Asteroids", 1080, 540, false, 120);
 
         running = true;
@@ -73,4 +74,5 @@ private:
 	bool running;
 
 	Game* game;
+    SDL_Window* window;
 };

@@ -11,18 +11,22 @@ const char* asteroid_paths[] = {
 	"Assets/asteroids_meteor_large.png"
 };
 
-Game::Game() {
+Game::Game(SDL_Window* win, SDL_Renderer* rend) {
 	timer = new Timer();
 	count = 0;
 	fps = 12;
 
 	isRunning = false;
+
+	renderer = rend;
+	window = win;
 }
 Game::~Game() {
 
 }
 
 void Game::InitGame(const char* title, int width, int height, bool fullScreen, int f_p_s) {
+	/*
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) { // No se ha iniciado todo bien
 		isRunning = false;
 		return;
@@ -52,6 +56,13 @@ void Game::InitGame(const char* title, int width, int height, bool fullScreen, i
 	}
 	else
 		cout << "Renderer failed to create at Game.cpp" << endl;
+		*/
+	if (!window || !renderer) {
+		std::cout << "Ventana o renderer no válidos." << std::endl;
+		isRunning = false;
+		return;
+	}
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
 	fps = f_p_s;
 	framerate = (1000 / fps); // Tiempo a tener entre frames

@@ -13,7 +13,7 @@
 
 class Game {
 public:
-	Game();
+	Game(SDL_Window* win, SDL_Renderer* rend);
 	~Game();
 
 	void InitGame(const char* title, int width, int height, bool fullScreen, int f_p_s);

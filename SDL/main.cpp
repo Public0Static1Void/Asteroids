@@ -114,10 +114,10 @@ int main(int argc, char* argv[]) {
 	else
 		cout << "Renderer failed to create at Game.cpp" << endl;
 
-	//SDL_Renderer* renderer = SDL_CreateRenderer(nullptr, -1, SDL_RENDERER_ACCELERATED);
+    //renderer = SDL_CreateRenderer(nullptr, -1, SDL_RENDERER_ACCELERATED);
 
 	SceneManager sceneManager;
-	sceneManager.ChangeScene(new MainMenuScene(), renderer);
+	sceneManager.ChangeScene(new GameScene(window), renderer);
 
 	Timer timer;
 	SDL_Event event;
