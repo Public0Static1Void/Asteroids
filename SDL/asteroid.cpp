@@ -1,7 +1,7 @@
 #include "Asteroid.h"
 
-Asteroid::Asteroid(float x, float y, int width, int height, float speed, int s, const char* im_address)
-    : x(x), y(y), speed(speed), directionX(0), directionY(0), size(s), image_address(im_address) {
+Asteroid::Asteroid(float x, float y, int width, int height, float speed, int s, const char* im_address, bool has_parent)
+    : x(x), y(y), speed(speed), directionX(0), directionY(0), size(s), image_address(im_address), parent(has_parent) {
 
     asteroidRect = new SDL_Rect();
 
@@ -17,9 +17,16 @@ void Asteroid::updatePosition(const Player* player) {
     float deltaY;
     if (!launched)
     {
-        deltaX = player->pRect->x - x;
-        deltaY = player->pRect->y - y;
-
+        // 1 de 5 asteroides irá dirigido al jugador
+        int chase_player = rand() % 5;
+        if (chase_player == 0 && !parent) {
+            deltaX = player->pRect->x - x;
+            deltaY = player->pRect->y - y;
+        }
+        else {
+            deltaX = rand() % 360;
+            deltaY = rand() % 360;
+        }
         float distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
 
         if (distance != 0) {
@@ -33,15 +40,22 @@ void Asteroid::updatePosition(const Player* player) {
     x += directionX * speed;
     y += directionY * speed;
 
-    if (x < 0 - asteroidRect->w) x += 1080;
-    if (x > 1080 + asteroidRect->w) x -= 1080;
-    if (y < 0 - asteroidRect->h) y += 540;
-    if (y > 540 + asteroidRect->h) y -= 540;
+    // Límites de la pantalla
+    int screen_w = 1080;
+    int screen_h = 540;
+    if (x > screen_w) x -= screen_w + asteroidRect->w;
+    if (x < -asteroidRect->w) x += screen_w + asteroidRect->w;
+    if (y > screen_h) y -= screen_h + asteroidRect->h;
+    if (y < -asteroidRect->h) y += screen_h + asteroidRect->h;
 
     asteroidRect->x = static_cast<int>(x);
     asteroidRect->y = static_cast<int>(y);
+}
 
-    std::cout << "Position: ( " << asteroidRect->x << ", " << asteroidRect->y << " )\n";
+void Asteroid::SetDir(float x_dir, float y_dir) {
+    float distance = std::sqrt(x_dir * x_dir + y_dir * y_dir);
+    directionX = x_dir / distance;
+    directionY = y_dir / distance;
 }
 
 void Asteroid::LoadSprites(SDL_Renderer* renderer) {

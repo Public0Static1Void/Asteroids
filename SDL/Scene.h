@@ -1,10 +1,15 @@
 #pragma once
 #include <SDL.h>
-#include <string>
+
 class Scene {
 public:
-	Scene(int playerSpeed, int asteroidSpeed, int roundIncrease);
-	~Scene();
+	virtual ~Scene();
 
-	void Update();
+	virtual void Init(SDL_Renderer* renderer) = 0;
+	virtual void HandleEvents(SDL_Event& event) = 0;
+	virtual void Update(float deltaTime) = 0;
+	virtual void Render(SDL_Renderer* renderer) = 0;
+	virtual void CleanUp() = 0;
+
+	virtual bool IsRunning() const = 0;
 };

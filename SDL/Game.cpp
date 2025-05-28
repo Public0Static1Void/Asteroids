@@ -27,6 +27,9 @@ void Game::InitGame(const char* title, int width, int height, bool fullScreen, i
 		isRunning = false;
 		return;
 	}
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+		std::cout << "SDL_mixer error: " << Mix_GetError() << std::endl;
+	}
 
 	cout << "Init succesful." << endl;
 
@@ -62,34 +65,29 @@ void Game::InitGame(const char* title, int width, int height, bool fullScreen, i
 	SDL_FreeSurface(tmpSurface);
 
 	// Player
-	player = new Player(540, 270, 32, 32, 3, 2, "Assets/asteroids_nave.png");
+	player = new Player(540, 270, 32, 32, 3, 2, "Assets/asteroids_nave.png", fps);
 	player->LoadSprites(renderer);
 
-	// Asteroide ----------------------------------------------------------------------
-	asteroid_mini = new Asteroid(-10, -10, 32, 32, 2, 1, "Assets/asteroids_meteor_little.png");
-	asteroid_mini->LoadSprites(renderer);
-
-	asteroid_mid = new Asteroid(1080, 550, 128, 64, 2, 2, "Assets/asteroids_meteor_medium.png");
-	asteroid_mid->LoadSprites(renderer);
-
+	// Asteroides ----------------------------------------------------------------------
 	SpawnAsteroids(5);
 }
 
 void Game::SpawnAsteroids(int num) {
-	if (asteroids.size() >= 50) return;
+	if (asteroids.size() >= 25) return;
 
 	for (int i = 0; i < num; i++) {
-		int x = rand() % 1080;
-		int y = rand() % 1;
+		int x = -128 + rand() % (1080 + 128);
+		int y = rand() % 2;
 		switch (y) {
 		case 0:
-			y = -10;
+			y = -20;
 			break;
 		case 1:
-			y = 560;
+			y = 580;
 			break;
 		}
-		Asteroid* as = new Asteroid(x, y, 64, 64, 1 + round, 2, asteroid_paths[2]);
+		float rand_speed = 0.5f + rand() % (1 + round);
+		Asteroid* as = new Asteroid(x, y, 115 + rand() % 9, 115 + rand() % 9, rand_speed, 2, asteroid_paths[2], false);
 		as->LoadSprites(renderer);
 		asteroids.push_back(as);
 	}
@@ -133,20 +131,13 @@ void Game::Update() {
 	count++;
 	player->loop_count++;
 
-	if (count > framerate * 100) {
-		SpawnAsteroids(5 + round);
+	if (asteroids.size() <= 0) {
 		round++;
+		SpawnAsteroids(4 + round);
 
 		count = 0;
 	}
 
-	asteroid_mini->updatePosition(player);
-	asteroid_mini->checkCollision(player->pRect);
-
-	if (asteroid_mini->checkCollision(player->pRect))
-	{
-		isRunning = false; // gg
-	}
 
 	for (int i = 0; i < asteroids.size(); i++) {
 		asteroids[i]->updatePosition(player);
@@ -154,9 +145,11 @@ void Game::Update() {
 		if (asteroids[i]->checkCollision(player->pRect))
 			isRunning = false;
 		for (int j = 0; j < player->bullet_num; j++) {
-			if (asteroids[i]->checkCollision(player->bullet[j]->bullet_rect)) {
+			if (player->bullet[j]->render && asteroids[i]->checkCollision(player->bullet[j]->bullet_rect)) {
+				player->bullet[j]->render = false;
 				player->bullet[j]->SumY(1000);
-				createAsteroid(1, asteroids[i]->size - 1, asteroids[i]);
+				// El asteroide se podrá dividir en 1 o 2
+				createAsteroid(2, asteroids[i]->size - 1, asteroids[i]);
 				asteroids.erase(asteroids.begin() + i);
 
 				score += 105;
@@ -164,26 +157,32 @@ void Game::Update() {
 			}
 		}
 	}
-
-	asteroid_mid->updatePosition(player);
 }
 
 void Game::createAsteroid(int num, int size, Asteroid* parent) {
 	if (parent == nullptr)
 		return;
 
+	cout << "Created more" << endl;
+
 	int new_size = parent->size - 1;
-	if (new_size <= 0)
+	if (new_size < 0)
 		return;
+	int current_speed = static_cast<int>(parent->speed);
+	if (current_speed <= 0) current_speed = 1;
 
 	for (int i = 0; i < num; i++) {
-		Asteroid* as = new Asteroid(parent->getX(), parent->getY(), parent->asteroidRect->w / 1.5f, parent->asteroidRect->h / 1.5f, 1 + round, new_size, asteroid_paths[new_size]);
-		
+		float new_speed = 0.5f + rand() % static_cast<int>(current_speed);
+
+		Asteroid* as = new Asteroid(parent->getX(), parent->getY(), parent->asteroidRect->w / 1.5f, parent->asteroidRect->h / 1.5f, new_speed, new_size, asteroid_paths[new_size], true);
 		if (as == nullptr) return;
 
 		as->LoadSprites(renderer);
+		as->SetDir(parent->GetDir().x + (-15 + rand() % 16), parent->GetDir().y + (-15 + rand() % 16));
 		asteroids.push_back(as);
 	}
+
+	delete parent;
 }
 
 void Game::Render() {
@@ -192,8 +191,6 @@ void Game::Render() {
 	// Aquí se añadirán las cosas para dibujarlas
 
 	player->Render(renderer);
-	asteroid_mini->Render(renderer);
-	asteroid_mid->Render(renderer);
 
 	for (int i = 0; i < asteroids.size(); i++) {
 		asteroids[i]->Render(renderer);

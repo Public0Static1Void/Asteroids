@@ -3,16 +3,16 @@
 #include "Player.h"
 #include <iostream>
 #include <SDL.h>
+#include "Vector2.h"
 
 class Asteroid {
 private:
     float x, y;
-    float speed;
     float directionX, directionY;
 
 
 public:
-    Asteroid(float x, float y, int width, int height, float speed, int size, const char* im_address);
+    Asteroid(float x, float y, int width, int height, float speed, int size, const char* im_address, bool has_parent);
 
     void LoadSprites(SDL_Renderer* renderer);
 
@@ -22,6 +22,8 @@ public:
     float getX() const { return x; }
     float getY() const { return y; }
 
+    Vector2 GetDir() { return Vector2(directionX, directionY); }
+    void SetDir(float x_dir, float y_dir);
 
     SDL_Rect* asteroidRect;
     SDL_Texture* asteroid_texture;
@@ -34,6 +36,8 @@ public:
     int size;
 
     float rotation;
+    float speed;
 
     bool dead = false;
+    bool parent;
 };

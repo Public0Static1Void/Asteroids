@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include <iostream>
 
 #include "SceneManager.h"
@@ -9,6 +10,10 @@ using namespace std;
 using namespace chrono;
 
 #include "Player.h"
+
+#include "SceneManager.h"
+#include "GameScene.h"
+#include "MainMenuScene.h"
 
 int main(int argc, char* argv[]) {
 	/*
@@ -58,6 +63,7 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
+	/*
 	Game* game = new Game();
 
 	game->InitGame("Asteroids", 1080, 540, false, 120);
@@ -79,6 +85,56 @@ int main(int argc, char* argv[]) {
 	}
 
 	game->Clear();
+	*/
+
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) { // No se ha iniciado todo bien
+		return 1;
+	}
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+		std::cout << "SDL_mixer error: " << Mix_GetError() << std::endl;
+	}
+
+	cout << "Init succesful." << endl;
+
+	std::srand(std::time(0));
+
+	int flags = 0;
+
+	SDL_Window* window = SDL_CreateWindow("Asteroids", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1080, 540, flags);
+	if (window)
+		cout << "Window created at Game.cpp" << endl;
+	else
+		cout << "Failed to create a window at Game.cpp" << endl;
+
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
+	if (renderer) {
+		cout << "Renderer created at Game.cpp" << endl;
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	}
+	else
+		cout << "Renderer failed to create at Game.cpp" << endl;
+
+	//SDL_Renderer* renderer = SDL_CreateRenderer(nullptr, -1, SDL_RENDERER_ACCELERATED);
+
+	SceneManager sceneManager;
+	sceneManager.ChangeScene(new MainMenuScene(), renderer);
+
+	Timer timer;
+	SDL_Event event;
+
+	while (sceneManager.IsSceneRunning()) {
+		high_resolution_clock::time_point before = timer.GetActualTime();
+
+		while (SDL_PollEvent(&event)) {
+			sceneManager.HandleEvents(event);
+		}
+
+		sceneManager.Update(timer.deltaTime);
+		sceneManager.Render(renderer);
+
+		high_resolution_clock::time_point after = timer.GetActualTime();
+		timer.UpdateDeltaTime(before, after);
+	}
 
 	return 0;
 }

@@ -1,1 +1,8 @@
-﻿LINK : fatal error LNK1104: no se puede abrir el archivo 'SDL2.lib'
+﻿  main.cpp
+C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\main.cpp(99,22): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+  SDL.vcxproj -> C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\binaries\x64Debug\SDL.exe
+  0 archivo(s) copiado(s)
+  0 archivo(s) copiado(s)
+  0 archivo(s) copiado(s)
+  0 archivo(s) copiado(s)
+  0 archivo(s) copiado(s)

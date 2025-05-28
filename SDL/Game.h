@@ -9,6 +9,7 @@
 #include <ctime>
 #include <fstream>
 #include <algorithm>
+#include <SDL_mixer.h>
 
 class Game {
 public:

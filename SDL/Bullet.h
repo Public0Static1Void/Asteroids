@@ -5,7 +5,7 @@
 
 class Bullet {
 public:
-	Bullet(float x, float y, int width, int height, float speed, const char* image_address);
+	Bullet(float x, float y, int width, int height, float speed, const char* image_address, int maxloops);
 	~Bullet();
 
 	void LoadSprites(SDL_Renderer* renderer);
@@ -21,12 +21,16 @@ public:
 	void SumY(int am) { xPos += am; }
 
 	SDL_Rect* bullet_rect;
+	bool render;
 private:
 	float speed;
 	float dir_x, dir_y;
 	float rotation;
 	float radians;
 	
+	int max_loops;
+	int loops = 0;
+
 	float xPos, yPos;
 
 	const char* image_address;

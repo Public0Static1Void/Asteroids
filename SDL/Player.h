@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include "SDL_image.h"
 #include <math.h>
 #include <iostream>
@@ -9,7 +10,7 @@
 
 class Player {
 public:
-	Player(int x, int y, int w, int h, float speed, int rotation_speed, const char* pl_address);
+	Player(int x, int y, int w, int h, float speed, int rotation_speed, const char* pl_address, int fps);
 	~Player();
 
 	void Move(int dir_x, int dir_y, Timer* timer);
@@ -49,5 +50,8 @@ private:
 
 	int current_bullet = 0;
 
-	int delay = 45;
+	int delay = 25;
+
+	Mix_Chunk* move_sound;
+	Mix_Chunk* shoot_sound;
 };

@@ -1,6 +1,6 @@
 #include "Player.h"
-
-Player::Player(int x, int y, int w, int h, float sp, int rot_speed, const char* pl_address) {
+using namespace std;
+Player::Player(int x, int y, int w, int h, float sp, int rot_speed, const char* pl_address, int fps) {
 	pRect = new SDL_Rect();
 	
 	posX = x;
@@ -20,8 +20,15 @@ Player::Player(int x, int y, int w, int h, float sp, int rot_speed, const char* 
 
 	loop_count = 0;
 
+	// Sonidos
+	move_sound = Mix_LoadWAV("Assets/s_ship_move.wav");
+	shoot_sound = Mix_LoadWAV("Assets/s_shoot.wav");
+	if (!move_sound) {
+		cout << "no move!" << endl;
+	}
+
 	for (int i = 0; i < bullet_num; i++)
-		bullet[i] = new Bullet(-10, 0, 5, 5, max_speed * 4, "Assets/asteroids_bala.png");
+		bullet[i] = new Bullet(-10, 0, 5, 5, max_speed * 4, "Assets/asteroids_bala.png", fps / 2);
 }
 Player::~Player() {
 
@@ -47,6 +54,8 @@ float x = 0;
 float y = 1;
 
 void Player::Move(int dir_x, int dir_y, Timer* timer) {
+	Mix_PlayChannel(-1, move_sound, 0);
+
 	// Rotación
     rotation += dir_x * rotation_speed;
 
@@ -89,6 +98,8 @@ void Player::Move(int dir_x, int dir_y, Timer* timer) {
 
 void Player::Shoot() {
 	if (loop_count < delay) return;
+
+	Mix_PlayChannel(-1, shoot_sound, 0);
 
 	bullet[current_bullet]->RestoreBullet(pRect->x + pRect->w / 2, pRect->y + pRect->h / 2);
 
