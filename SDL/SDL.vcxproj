@@ -21,10 +21,12 @@
   <ItemGroup>
     <ClInclude Include="asteroid.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="CreditsScene.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="ResultsScene.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="source\GameEngine.h" />

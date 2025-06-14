@@ -6,12 +6,19 @@ SceneManager::~SceneManager() {
 }
 
 void SceneManager::ChangeScene(Scene* newScene, SDL_Renderer* renderer) {
-	if (currentScene) {
-		currentScene->CleanUp();
-		delete currentScene;
+	nextScene = newScene;
+}
+void SceneManager::ApplyNextScene(SDL_Renderer* renderer) {
+	if (nextScene != nullptr) {
+		if (currentScene) {
+			currentScene->CleanUp();
+			delete currentScene;
+		}
+		currentScene = nextScene;
+		currentScene->Init(renderer);
+
+		nextScene = nullptr;
 	}
-	currentScene = newScene;
-	currentScene->Init(renderer);
 }
 
 void SceneManager::HandleEvents(SDL_Event& event) {

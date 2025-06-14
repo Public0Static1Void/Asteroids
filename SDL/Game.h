@@ -10,6 +10,7 @@
 #include <fstream>
 #include <algorithm>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 
 class Game {
 public:
@@ -48,9 +49,13 @@ private:
 
 	void SpawnAsteroids(int num);
 
+	void ShowText(int x, int y, const char* phrase, SDL_Color color);
+
 	int round = 0;
 
 	int score = 0;
 
 	std::vector<Asteroid*> asteroids = {};
+
+	TTF_Font* font;
 };

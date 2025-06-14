@@ -6,6 +6,7 @@ public:
 	~SceneManager();
 
 	void ChangeScene(Scene* newScene, SDL_Renderer* renderer);
+	void ApplyNextScene(SDL_Renderer* renderer);
 	void HandleEvents(SDL_Event& event);
 	void Update(float deltaTime);
 	void Render(SDL_Renderer* renderer);
@@ -16,4 +17,5 @@ public:
 
 private:
 	Scene* currentScene = nullptr;
+	Scene* nextScene = nullptr;
 };

@@ -7,6 +7,8 @@
 #include "Time.h"
 #include "Game.h"
 
+#include "ResultsScene.h"
+
 using namespace std;
 using namespace chrono;
 
@@ -15,7 +17,7 @@ using namespace chrono;
 class GameScene : public Scene
 {
 public:
-    GameScene(SDL_Window* win) { window = win; }
+    GameScene(SDL_Window* win, SceneManager* sm) { window = win; sceneManager = sm; }
     void Init(SDL_Renderer* renderer) override {
         game = new Game(window, renderer);
         game->InitGame("Asteroids", 1080, 540, false, 120);
@@ -53,6 +55,7 @@ public:
         }
 
         game->Clear();
+        sceneManager->ChangeScene(new ResultsScene(window, sceneManager), renderer);
     }
 
     void Render(SDL_Renderer* renderer) override {
@@ -75,4 +78,7 @@ private:
 
 	Game* game;
     SDL_Window* window;
+    SceneManager* sceneManager;
+
+    SDL_Renderer* renderer;
 };

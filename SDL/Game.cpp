@@ -1,4 +1,5 @@
 ﻿#include "Game.h"
+#include <string>
 using namespace std;
 
 SDL_Texture* playerTex;
@@ -75,9 +76,14 @@ void Game::InitGame(const char* title, int width, int height, bool fullScreen, i
 	playerTex = SDL_CreateTextureFromSurface(renderer, tmpSurface);
 	SDL_FreeSurface(tmpSurface);
 
+	// Cargar fuente
+	font = TTF_OpenFont("Assets/font.ttf", 16);
+
 	// Player
 	player = new Player(540, 270, 32, 32, 3, 2, "Assets/asteroids_nave.png", fps);
 	player->LoadSprites(renderer);
+	player->invulnerable_time = framerate * 5; // Cálculo de un segundo y medio
+	
 
 	// Asteroides ----------------------------------------------------------------------
 	SpawnAsteroids(5);
@@ -153,8 +159,17 @@ void Game::Update() {
 	for (int i = 0; i < asteroids.size(); i++) {
 		asteroids[i]->updatePosition(player);
 
-		if (asteroids[i]->checkCollision(player->pRect))
-			isRunning = false;
+		if (!player->damaged && asteroids[i]->checkCollision(player->pRect)) {
+			player->lives--;
+			if (player->lives <= 0) {
+				isRunning = false;
+			}
+			else {
+				player->damaged = true;
+				player->SetPosition(540, 270);
+			}
+			
+		}
 		for (int j = 0; j < player->bullet_num; j++) {
 			if (player->bullet[j]->render && asteroids[i]->checkCollision(player->bullet[j]->bullet_rect)) {
 				player->bullet[j]->render = false;
@@ -163,11 +178,44 @@ void Game::Update() {
 				createAsteroid(2, asteroids[i]->size - 1, asteroids[i]);
 				asteroids.erase(asteroids.begin() + i);
 
-				score += 105;
+				// Suma score según el tamaño del asteroide
+				if (i < asteroids.size()) {
+					int sum = asteroids[i]->size - 1;
+					if (sum < 0)
+						sum = 10;
+					score += 50 * sum;
+				}
+				
 				break;
 			}
 		}
 	}
+}
+
+void Game::ShowText(int x, int y, const char* phrase, SDL_Color color) {
+	SDL_Surface* surface = TTF_RenderText_Solid(font, phrase, color);
+	if (!surface) {
+		cout << "Error with the text surface.1" << endl;
+		return;
+	}
+
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	if (!texture) {
+		cout << "Error with the text surface" << endl;
+		SDL_FreeSurface(surface);
+		return;
+	}
+
+	int textW = surface->w;
+	int textH = surface->h;
+
+	SDL_FreeSurface(surface);
+
+	SDL_Rect dstRect = { x, y, textW, textH };
+
+	SDL_RenderCopy(renderer, texture, NULL, &dstRect);
+
+	SDL_DestroyTexture(texture);
 }
 
 void Game::createAsteroid(int num, int size, Asteroid* parent) {
@@ -200,6 +248,12 @@ void Game::Render() {
 	SDL_RenderClear(renderer);
 
 	// Aquí se añadirán las cosas para dibujarlas
+	SDL_Color white = { 255, 255, 255, 255 };
+	std::string text = "Lives: " + std::to_string(player->lives);
+	ShowText(0, 0, text.c_str(), white);
+
+	text = "Score: " + std::to_string(score);
+	ShowText(0, 16, text.c_str(), white);
 
 	player->Render(renderer);
 
@@ -211,12 +265,8 @@ void Game::Render() {
 }
 
 void Game::Clear() {
-	SDL_DestroyWindow(window);
-	SDL_DestroyRenderer(renderer);
-
 	SaveScore(score);
 
-	SDL_Quit();
 	cout << "Game cleaned" << endl;
 }
 
@@ -227,7 +277,7 @@ bool Game::Running() {
 void Game::SaveScore(int score) {
 	ofstream file("score.txt", std::ios::app);
 	if (file.is_open()) {
-		file << "Player Score: " << score << endl;
+		file << score << endl;
 		file.close();
 		cout << "Score saved successfully." << endl;
 	}

@@ -51,6 +51,12 @@
     <ClInclude Include="MainMenuScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CreditsScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultsScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

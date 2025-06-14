@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 #include <iostream>
+#include <SDL_ttf.h>
 
 #include "SceneManager.h"
 #include "Time.h"
@@ -43,7 +44,7 @@ int main(int argc, char* argv[]) {
 
 		main_scene.Render(sceneManager.renderer);
 	}
-	*/
+	
 	bool con = true;
 	while (con) {
 		cout << "Asteroids ------\n1- Play\n2- Exit\n3- Credits\n\n-- > ";
@@ -61,7 +62,7 @@ int main(int argc, char* argv[]) {
 		case 3:
 			cout << "-- Code --------------" << endl << "Daniel Gonzalez\nHugo Ahmed\n\n\n";
 		}
-	}
+	}*/
 
 	/*
 	Game* game = new Game();
@@ -90,6 +91,9 @@ int main(int argc, char* argv[]) {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) { // No se ha iniciado todo bien
 		return 1;
 	}
+	if (TTF_Init() == -1) { // No se ha iniciado bien el texto
+		return 2;
+	}
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 		std::cout << "SDL_mixer error: " << Mix_GetError() << std::endl;
 	}
@@ -117,7 +121,9 @@ int main(int argc, char* argv[]) {
     //renderer = SDL_CreateRenderer(nullptr, -1, SDL_RENDERER_ACCELERATED);
 
 	SceneManager sceneManager;
-	sceneManager.ChangeScene(new GameScene(window), renderer);
+	sceneManager.ChangeScene(new MainMenuScene(window, renderer, &sceneManager), renderer);
+	sceneManager.ApplyNextScene(renderer);
+	//sceneManager.ChangeScene(new GameScene(window, &sceneManager), renderer);
 
 	Timer timer;
 	SDL_Event event;
@@ -134,6 +140,9 @@ int main(int argc, char* argv[]) {
 
 		high_resolution_clock::time_point after = timer.GetActualTime();
 		timer.UpdateDeltaTime(before, after);
+
+		// Aplica el cambio de escena de necesitarse
+		sceneManager.ApplyNextScene(renderer);
 	}
 
 	return 0;

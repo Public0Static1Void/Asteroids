@@ -10,7 +10,7 @@
 
 class Player {
 public:
-	Player(int x, int y, int w, int h, float speed, int rotation_speed, const char* pl_address, int fps);
+	Player(int x, int y, int w, int h, float speed, int rotation_speed, const char* pl_address, int f_p_s);
 	~Player();
 
 	void Move(int dir_x, int dir_y, Timer* timer);
@@ -29,13 +29,23 @@ public:
 	const float getX() { return posX; }
 	const float getY() { return posY; }
 
+	void SetPosition(int x, int y) { posX = x; posY = y; }
+
 	int loop_count;
+	int lives = 3;
 
 	static const int bullet_num = 10;
 	Bullet* bullet[bullet_num];
 
+	bool damaged = false;
+	float invulnerable_time = 0;
+
 private:
+	int fps = 0;
+
 	const char* image_address;
+
+	float damaged_timer = 0, rendered_timer = 0;
 
 	float speed;
 	float max_speed;
@@ -54,4 +64,6 @@ private:
 
 	Mix_Chunk* move_sound;
 	Mix_Chunk* shoot_sound;
+
+	bool rendered = false;
 };

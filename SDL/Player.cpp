@@ -1,6 +1,6 @@
 #include "Player.h"
 using namespace std;
-Player::Player(int x, int y, int w, int h, float sp, int rot_speed, const char* pl_address, int fps) {
+Player::Player(int x, int y, int w, int h, float sp, int rot_speed, const char* pl_address, int f_p_s) {
 	pRect = new SDL_Rect();
 	
 	posX = x;
@@ -19,12 +19,13 @@ Player::Player(int x, int y, int w, int h, float sp, int rot_speed, const char* 
 	image_address = pl_address;
 
 	loop_count = 0;
+	fps = f_p_s;
 
 	// Sonidos
 	move_sound = Mix_LoadWAV("Assets/s_ship_move.wav");
 	shoot_sound = Mix_LoadWAV("Assets/s_shoot.wav");
 	if (!move_sound) {
-		cout << "no move!" << endl;
+		cout << "no move sound!" << endl;
 	}
 
 	for (int i = 0; i < bullet_num; i++)
@@ -44,7 +45,16 @@ void Player::LoadSprites(SDL_Renderer* renderer) {
 }
 
 void Player::Render(SDL_Renderer* renderer) {
-	SDL_RenderCopyEx(renderer, playerTex, nullptr, pRect, rotation, nullptr, SDL_FLIP_NONE);
+	// El jugador parpadeará mientras sea invulnerable
+	if (!damaged) {
+		SDL_RenderCopyEx(renderer, playerTex, nullptr, pRect, rotation, nullptr, SDL_FLIP_NONE);
+	}
+	else {
+		if (!rendered) {
+			SDL_RenderCopyEx(renderer, playerTex, nullptr, pRect, rotation, nullptr, SDL_FLIP_NONE);
+			rendered = true;
+		}
+	}
 	for (int i = 0; i < bullet_num; i++)
 		bullet[i]->Render(renderer);
 }
@@ -93,7 +103,21 @@ void Player::Move(int dir_x, int dir_y, Timer* timer) {
 	pRect->x = static_cast<int>(posX);
 	pRect->y = static_cast<int>(posY);
 
-	//std::cout << "Position: ( " << posX << ", " << posY << " ), Rotation: " << angle << ", Inertia: " << inertia << std::endl;
+	// Timers ------------------------------------
+	if (damaged) {
+		damaged_timer += ((float)fps / 1000);
+		if (damaged_timer >= invulnerable_time) {
+			damaged = false;
+			damaged_timer = 0;
+		}
+	}
+	if (rendered) {
+		rendered_timer += ((float)fps / 1000);
+		if (rendered_timer >= 0.25f) {
+			rendered = false;
+			rendered_timer = 0;
+		}
+	}
 }
 
 void Player::Shoot() {

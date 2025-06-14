@@ -1,5 +1,7 @@
 ﻿  main.cpp
-C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\main.cpp(99,22): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Player.h(32,42): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\Player.h(32,52): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\main.cpp(103,22): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
   SDL.vcxproj -> C:\Users\Dani\Downloads\SDL_Base\SDL_Base\Asteroids\SDL\binaries\x64Debug\SDL.exe
   0 archivo(s) copiado(s)
   0 archivo(s) copiado(s)
